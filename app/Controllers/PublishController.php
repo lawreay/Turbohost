@@ -1,0 +1,124 @@
+<?php
+
+namespace App\Controllers;
+
+use App\Core\Controller;
+use App\Core\Csrf;
+use App\Core\Session;
+use App\Models\Website;
+use App\Services\AuthService;
+use App\Services\BackupService;
+use App\Services\NotificationManager;
+use App\Services\PublishingService;
+use App\Services\SitemapGenerator;
+
+/**
+ * Handles publishing and unpublishing static websites.
+ */
+class PublishController extends Controller
+{
+    /**
+     * Publish a website project.
+     */
+    public function publish(): void
+    {
+        [$userId, $website] = $this->requireWebsiteFromPost();
+        $this->requireCsrf('/dashboard/websites/show?id=' . (int) $website['id']);
+
+        try {
+            $websiteModel = new Website();
+
+            (new BackupService())->backupDraft($userId, $website['slug']);
+            (new PublishingService())->publish($userId, (int) $website['id'], $website['slug']);
+            $websiteModel->updateStatus((int) $website['id'], $userId, 'published');
+            try {
+                (new SitemapGenerator($this->config))->writeToFile();
+            } catch (\Throwable $exception) {
+                // Sitemap regeneration should not block publish success.
+            }
+            (new NotificationManager($this->config))->sendUserNotification(
+                $userId,
+                'Website published',
+                sprintf('Your website "%s" is now live.', $website['website_name']),
+                [
+                    'category' => 'website',
+                    'icon' => 'globe',
+                    'target_url' => '/dashboard/websites/show?id=' . (int) $website['id'],
+                ]
+            );
+
+            Session::flash('success', 'Website published.');
+        } catch (\Throwable $exception) {
+            Session::flash('error', $exception->getMessage());
+        }
+
+        $this->redirectTo('/dashboard/websites/show?id=' . (int) $website['id']);
+    }
+
+    /**
+     * Remove a website from the public site folder.
+     */
+    public function unpublish(): void
+    {
+        [$userId, $website] = $this->requireWebsiteFromPost();
+        $this->requireCsrf('/dashboard/websites/show?id=' . (int) $website['id']);
+
+        try {
+            $websiteModel = new Website();
+            (new PublishingService())->unpublish((int) $website['id'], $website['slug']);
+            $websiteModel->updateStatus((int) $website['id'], $userId, 'draft');
+            try {
+                (new SitemapGenerator($this->config))->writeToFile();
+            } catch (\Throwable $exception) {
+                // Sitemap regeneration should not block unpublish success.
+            }
+            (new NotificationManager($this->config))->sendUserNotification(
+                $userId,
+                'Website unpublished',
+                sprintf('Your website "%s" is no longer live.', $website['website_name']),
+                [
+                    'category' => 'website',
+                    'icon' => 'globe-2',
+                    'target_url' => '/dashboard/websites/show?id=' . (int) $website['id'],
+                ]
+            );
+
+            Session::flash('success', 'Website unpublished.');
+        } catch (\Throwable $exception) {
+            Session::flash('error', $exception->getMessage());
+        }
+
+        $this->redirectTo('/dashboard/websites/show?id=' . (int) $website['id']);
+    }
+
+    /**
+     * Require a project from a POST request.
+     */
+    private function requireWebsiteFromPost(): array
+    {
+        if (!AuthService::check()) {
+            $this->redirectTo('/login');
+        }
+
+        $userId = (int) AuthService::id();
+        $website = (new Website())->findForUser((int) $this->input('website_id', 0), $userId);
+
+        if (!$website) {
+            Session::flash('error', 'Website project not found.');
+            $this->redirectTo('/dashboard/websites');
+        }
+
+        return [$userId, $website];
+    }
+
+    /**
+     * Require CSRF for publish actions.
+     */
+    private function requireCsrf(string $fallback): void
+    {
+        if (!Csrf::validate($this->input('_csrf'))) {
+            Session::flash('error', 'Your session expired. Please try again.');
+            $this->redirectTo($fallback);
+        }
+    }
+}

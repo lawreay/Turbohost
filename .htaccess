@@ -1,0 +1,19 @@
+Options -Indexes
+DirectoryIndex index.php
+RewriteEngine On
+RewriteBase /
+
+# Support direct public asset requests and fallback from /public paths
+RewriteRule ^public/(assets|sites|uploads)/(.*)$ public/$1/$2 [L,NC,QSA]
+RewriteCond %{REQUEST_URI} ^/sitemap\.xml$ [NC]
+RewriteCond %{DOCUMENT_ROOT}/public/sitemap.xml -f
+RewriteRule ^sitemap\.xml$ public/sitemap.xml [L,NC,QSA]
+RewriteRule ^(assets|sites|uploads|favicon\.ico|robots\.txt)(.*)$ public/$1$2 [L,NC,QSA]
+
+# If the requested file or directory exists in the root, serve it directly
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# Otherwise send all requests to the public front controller
+RewriteRule . public/index.php [L,QSA]

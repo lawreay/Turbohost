@@ -1,0 +1,78 @@
+<?php
+$baseUrl = rtrim((string) ($app['base_url'] ?? ''), '/');
+$formatBytes = static function (int $bytes): string {
+    if ($bytes >= 1073741824) {
+        return number_format($bytes / 1073741824, 2) . ' GB';
+    }
+
+    return number_format($bytes / 1048576, 2) . ' MB';
+};
+?>
+<section class="client-dashboard">
+  <aside class="client-sidebar">
+    <div class="client-profile">
+      <div class="client-avatar">W</div>
+      <strong>Websites</strong>
+      <span><?= htmlspecialchars(ucfirst($plan), ENT_QUOTES, 'UTF-8') ?> Plan</span>
+    </div>
+    <nav class="client-nav">
+      <a href="<?= htmlspecialchars($baseUrl . '/dashboard', ENT_QUOTES, 'UTF-8') ?>"><i data-lucide="layout-dashboard"></i> Dashboard</a>
+      <a class="active" href="<?= htmlspecialchars($baseUrl . '/dashboard/websites', ENT_QUOTES, 'UTF-8') ?>"><i data-lucide="globe-2"></i> Websites</a>
+      <a href="<?= htmlspecialchars($baseUrl . '/profile', ENT_QUOTES, 'UTF-8') ?>"><i data-lucide="user"></i> Profile</a>
+    </nav>
+  </aside>
+
+  <div class="client-main">
+    <header class="client-header">
+      <div>
+        <p class="auth-eyebrow">Website Projects</p>
+        <h1>My Websites</h1>
+        <p>Create and manage the draft projects that will later power file manager, preview, and publishing.</p>
+      </div>
+      <a class="btn btn-primary <?= $canCreate ? '' : 'disabled' ?>" href="<?= htmlspecialchars($baseUrl . '/dashboard/websites/create', ENT_QUOTES, 'UTF-8') ?>">
+        <i data-lucide="plus"></i> Create Website
+      </a>
+    </header>
+
+    <section class="client-card">
+      <div class="client-card-head">
+        <h2>Projects</h2>
+        <span><?= count($websites) ?> total</span>
+      </div>
+
+      <?php if ($websites === []): ?>
+        <div class="client-empty">
+          <i data-lucide="folder-plus"></i>
+          <strong>No websites yet</strong>
+          <p>Create your first project to prepare draft files outside the public web root.</p>
+        </div>
+      <?php else: ?>
+        <div class="client-site-list">
+          <?php foreach ($websites as $website): ?>
+            <article class="client-site">
+              <div class="site-icon"><i data-lucide="globe-2"></i></div>
+              <div>
+                <strong>
+                  <a href="<?= htmlspecialchars($baseUrl . '/dashboard/websites/show?id=' . (int) $website['id'], ENT_QUOTES, 'UTF-8') ?>">
+                    <?= htmlspecialchars($website['website_name'] ?: 'Untitled website', ENT_QUOTES, 'UTF-8') ?>
+                  </a>
+                </strong>
+                <span><?= htmlspecialchars((string) ($website['public_url'] ?? ''), ENT_QUOTES, 'UTF-8') ?> · <?= htmlspecialchars($formatBytes((int) $website['storage_used']), ENT_QUOTES, 'UTF-8') ?></span>
+              </div>
+              <div class="d-flex align-items-center" style="gap:0.5rem;">
+                <span class="client-status <?= htmlspecialchars($website['status'], ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars($website['status'], ENT_QUOTES, 'UTF-8') ?></span>
+                <?php if (($website['status'] ?? '') === 'published' && !empty($website['public_url'])): ?>
+                  <button type="button" class="btn btn-sm btn-outline-secondary btn-share-site" data-share-url="<?= htmlspecialchars($website['public_url'], ENT_QUOTES, 'UTF-8') ?>" title="Share site"><i data-lucide="share-2"></i> Share</button>
+                <?php endif; ?>
+              </div>
+            </article>
+          <?php endforeach; ?>
+        </div>
+      <?php endif; ?>
+
+      <?php if (!$canCreate): ?>
+        <p class="text-secondary mt-4 mb-0">Free plan allows one active website. Upgrade to Premium when you are ready to create more projects.</p>
+      <?php endif; ?>
+    </section>
+  </div>
+</section>

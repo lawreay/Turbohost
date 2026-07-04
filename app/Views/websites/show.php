@@ -1,0 +1,105 @@
+<?php
+$baseUrl = rtrim((string) ($app['base_url'] ?? ''), '/');
+$liveUrl = (string) ($liveUrl ?? '');
+$formatBytes = static function (int $bytes): string {
+    if ($bytes >= 1073741824) {
+        return number_format($bytes / 1073741824, 2) . ' GB';
+    }
+
+    return number_format($bytes / 1048576, 2) . ' MB';
+};
+?>
+<section class="client-dashboard">
+  <aside class="client-sidebar">
+    <div class="client-profile">
+      <div class="client-avatar"><?= htmlspecialchars(strtoupper(substr((string) ($website['website_name'] ?? 'W'), 0, 1)), ENT_QUOTES, 'UTF-8') ?></div>
+      <strong><?= htmlspecialchars($website['website_name'] ?: 'Website', ENT_QUOTES, 'UTF-8') ?></strong>
+      <span><?= htmlspecialchars($website['status'], ENT_QUOTES, 'UTF-8') ?></span>
+    </div>
+    <nav class="client-nav">
+      <a href="<?= htmlspecialchars($baseUrl . '/dashboard', ENT_QUOTES, 'UTF-8') ?>"><i data-lucide="layout-dashboard"></i> Dashboard</a>
+      <a class="active" href="<?= htmlspecialchars($baseUrl . '/dashboard/websites', ENT_QUOTES, 'UTF-8') ?>"><i data-lucide="globe-2"></i> Websites</a>
+      <a href="<?= htmlspecialchars($baseUrl . '/profile', ENT_QUOTES, 'UTF-8') ?>"><i data-lucide="user"></i> Profile</a>
+    </nav>
+  </aside>
+
+  <div class="client-main">
+    <header class="client-header">
+      <div>
+        <p class="auth-eyebrow">Project Summary</p>
+        <h1><?= htmlspecialchars($website['website_name'] ?: 'Website', ENT_QUOTES, 'UTF-8') ?></h1>
+        <p><?= htmlspecialchars($liveUrl, ENT_QUOTES, 'UTF-8') ?></p>
+      </div>
+      <div class="d-flex gap-2 flex-wrap">
+        <a class="btn btn-outline-primary" href="<?= htmlspecialchars($baseUrl . '/dashboard/websites/edit?id=' . (int) $website['id'], ENT_QUOTES, 'UTF-8') ?>"><i data-lucide="pencil"></i> Edit</a>
+        <a class="btn btn-primary" href="<?= htmlspecialchars($baseUrl . '/dashboard/websites/files?id=' . (int) $website['id'], ENT_QUOTES, 'UTF-8') ?>"><i data-lucide="upload-cloud"></i> File Manager</a>
+        <a class="btn btn-outline-primary" href="<?= htmlspecialchars($baseUrl . '/dashboard/websites/editor?id=' . (int) $website['id'] . '&path=index.html', ENT_QUOTES, 'UTF-8') ?>"><i data-lucide="code-2"></i> Code Editor</a>
+        <a class="btn btn-outline-primary" href="<?= htmlspecialchars($baseUrl . '/dashboard/websites/preview?id=' . (int) $website['id'], ENT_QUOTES, 'UTF-8') ?>"><i data-lucide="eye"></i> Preview</a>
+      </div>
+    </header>
+
+    <div class="client-stat-grid">
+      <div class="client-card client-stat">
+        <i data-lucide="activity"></i>
+        <span>Status</span>
+        <strong><?= htmlspecialchars(ucfirst($website['status']), ENT_QUOTES, 'UTF-8') ?></strong>
+        <small>Publish comes in Phase 4</small>
+      </div>
+      <div class="client-card client-stat">
+        <i data-lucide="hard-drive"></i>
+        <span>Storage</span>
+        <strong><?= htmlspecialchars($formatBytes((int) $website['storage_used']), ENT_QUOTES, 'UTF-8') ?></strong>
+        <small>Draft files</small>
+      </div>
+      <div class="client-card client-stat">
+        <i data-lucide="folder"></i>
+        <span>Draft Folder</span>
+        <strong>Ready</strong>
+        <small>Stored outside public web root</small>
+      </div>
+    </div>
+
+    <section class="client-card mt-4">
+      <div class="client-card-head">
+        <h2>Project Details</h2>
+        <span class="client-status <?= htmlspecialchars($website['status'], ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars($website['status'], ENT_QUOTES, 'UTF-8') ?></span>
+      </div>
+      <div class="client-mini-list">
+        <div>
+          <strong>Slug</strong>
+          <span><?= htmlspecialchars($website['slug'], ENT_QUOTES, 'UTF-8') ?></span>
+        </div>
+        <div>
+          <strong>Draft path</strong>
+          <span><?= htmlspecialchars($draftPath, ENT_QUOTES, 'UTF-8') ?></span>
+        </div>
+        <div>
+          <strong>Expires</strong>
+          <span><?= htmlspecialchars($website['expires_at'] ?: 'No expiry', ENT_QUOTES, 'UTF-8') ?></span>
+        </div>
+      </div>
+      <div class="d-flex gap-2 flex-wrap mt-4">
+        <form method="POST" action="<?= htmlspecialchars($baseUrl . '/dashboard/websites/publish', ENT_QUOTES, 'UTF-8') ?>">
+          <?= \App\Core\Csrf::field() ?>
+          <input type="hidden" name="website_id" value="<?= (int) $website['id'] ?>">
+          <button class="btn btn-primary" type="submit"><i data-lucide="rocket"></i> Publish Website</button>
+        </form>
+        <?php if ($website['status'] === 'published'): ?>
+          <a class="btn btn-outline-primary" target="_blank" rel="noopener" href="<?= htmlspecialchars($liveUrl, ENT_QUOTES, 'UTF-8') ?>"><i data-lucide="external-link"></i> Open Live Site</a>
+          <button type="button" class="btn btn-outline-secondary btn-share-site" data-share-url="<?= htmlspecialchars($liveUrl, ENT_QUOTES, 'UTF-8') ?>"><i data-lucide="share-2"></i> Share</button>
+          <form method="POST" action="<?= htmlspecialchars($baseUrl . '/dashboard/websites/unpublish', ENT_QUOTES, 'UTF-8') ?>">
+            <?= \App\Core\Csrf::field() ?>
+            <input type="hidden" name="website_id" value="<?= (int) $website['id'] ?>">
+            <button class="btn btn-outline-danger" type="submit"><i data-lucide="cloud-off"></i> Unpublish</button>
+          </form>
+        <?php endif; ?>
+      </div>
+
+      <form method="POST" action="<?= htmlspecialchars($baseUrl . '/dashboard/websites/delete', ENT_QUOTES, 'UTF-8') ?>" class="mt-4" onsubmit="return confirm('Delete this website project and draft files?');">
+        <?= \App\Core\Csrf::field() ?>
+        <input type="hidden" name="id" value="<?= (int) $website['id'] ?>">
+        <button class="btn btn-outline-danger" type="submit"><i data-lucide="trash-2"></i> Delete Website</button>
+      </form>
+    </section>
+  </div>
+</section>

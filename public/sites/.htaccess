@@ -1,0 +1,9 @@
+Options -Indexes
+DirectoryIndex index.html index.htm
+
+<FilesMatch "\.(php|phtml|phar|cgi|pl|py|sh|bat|cmd|exe)$">
+  Require all denied
+</FilesMatch>
+
+RemoveHandler .php .phtml .phar .cgi .pl .py .sh .bat .cmd .exe
+RemoveType .php .phtml .phar .cgi .pl .py .sh .bat .cmd .exe

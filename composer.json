@@ -1,0 +1,14 @@
+{
+  "name": "lawreaytech/turbohostmw",
+  "description": "TurboHostMw-style web hosting platform",
+  "type": "project",
+  "require": {
+    "php": ">=8.0",
+    "phpmailer/phpmailer": "^7.1"
+  },
+  "autoload": {
+    "psr-4": {
+      "App\\": "app/"
+    }
+  }
+}
