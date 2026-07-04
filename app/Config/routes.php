@@ -17,6 +17,7 @@ use App\Controllers\PublishController;
 use App\Controllers\NotificationController;
 use App\Controllers\PaymentController;
 use App\Controllers\SitemapController;
+use App\Controllers\AIController;
 
 return [
     'GET' => [
@@ -70,6 +71,7 @@ return [
          '/contact' => [MarketingController::class, 'contact'],
     ],
     'POST' => [
+        '/api/ai/generate' => [AIController::class, 'generate'],
         '/login' => [AuthController::class, 'login'],
         '/register' => [AuthController::class, 'register'],
         '/forgot-password' => [AuthController::class, 'sendResetLink'],

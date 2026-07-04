@@ -1,0 +1,23 @@
+
+ROUTES (web.php)
+
+Route::post('/generate', [AIController::class, 'generate']);
+
+CONTROLLER
+
+class AIController {
+  public function generate(Request $request) {
+    $prompt = $request->input('prompt');
+
+    $response = Http::withHeaders([
+      'Authorization' => 'Bearer '.env('GROQ_API_KEY')
+    ])->post('https://api.groq.com/openai/v1/chat/completions', [
+      'model' => 'llama-3.3-70b',
+      'messages' => [
+        ['role' => 'user', 'content' => $prompt]
+      ]
+    ]);
+
+    return $response->json();
+  }
+}
