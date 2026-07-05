@@ -1,185 +1,67 @@
-# Turbohost
+# TurboHostMw
 
-> Turbohost (TurboHostMw) is a lightweight web hosting and deployment platform designed to simplify how individuals and organizations publish and manage websites online.
+TurboHostMw is a custom PHP-based website hosting and publishing platform built with a lightweight MVC architecture.
 
----
+## Features
 
-## 🌐 Overview
+- User registration, login, email verification, and two-factor authentication
+- Client dashboard for website project management
+- Draft website file editing and file manager support
+- Static site publishing to `public/sites/{projectId}/{slug}/`
+- PayChangu Premium checkout and payment verification
+- Admin dashboard for user, website, media, payment, notification, report, legal, and settings management
+- Dynamic XML sitemap generation for marketing pages and published sites
+- Maintenance mode with bypass token support
 
-Turbohost provides a simplified hosting experience that removes traditional server complexity. It enables users to upload, manage, and deploy web projects through a unified dashboard.
+## Project Structure
 
-The platform focuses on:
-- Simplicity for end users
-- Fast project deployment
-- Secure access control
-- Structured logging and auditability
+- `app/` — core application classes, controllers, services, and models
+- `app/Core/` — base framework components: router, controller, model, database, CSRF, validation, view engine
+- `app/Controllers/` — HTTP request handlers for public site, auth, dashboard, admin, and payment workflows
+- `app/Services/` — reusable business logic for authentication, publishing, notifications, storage, payments, sitemap, and URLs
+- `app/Models/` — data access objects and repositories for users, websites, subscriptions, payments, reports, notifications, and legal policies
+- `app/Config/` — runtime configuration and route definitions
+- `public/` — web server document root and public assets
+- `storage/` — generated project storage, backups, exports, and logs
+- `documentation/` — engineering documentation and admin module docs
 
----
+## Installation
 
-## 🧩 Core Features
+1. Install PHP and required extensions: PDO, cURL, fileinfo, and optionally GD or Imagick for image conversion.
+2. Install Composer dependencies:
 
-### 🚀 Website Hosting Engine
-- Upload and manage web projects
-- Serve static websites directly from the platform
-- Map projects to accessible URLs
+   ```bash
+   composer install
+   ```
 
-### 👤 User Management
-- User authentication system
-- Session handling
-- Role-based access control (planned/enhanced)
+3. Create a writable `.env` file using the existing `.env` sample values.
+4. Configure database credentials in `app/Config/database.php` or via environment variables.
+5. Import the schema from `database/schema.sql` into your MySQL/MariaDB instance.
+6. Ensure `public/`, `storage/`, and `storage/projects/` are writable by the web server.
 
-### 🛡️ Security Layer
-- Input validation and sanitization
-- Protection against SQL injection and XSS
-- Secure session management
-- Admin action restrictions
+## Running
 
-### 📊 Logging System
-- Application logs
-- Security audit logs
-- Admin activity tracking
+Set your web server document root to `public/`, or use the PHP built-in server for local development:
 
-> Future enhancement: Dual-database logging system for resilience and forensic integrity.
-
----
-
-## 🏗️ System Architecture
-
-Turbohost follows a modular monolithic architecture:
-
-```
-Client (Browser)
-   ↓
-Frontend UI Layer
-   ↓
-Backend Application Layer
-   ↓
-Authentication & Security Layer
-   ↓
-Hosting / File Management Engine
-   ↓
-Database Layer
+```bash
+php -S localhost:8000 -t public
 ```
 
----
+Then open `http://localhost:8000` in the browser.
 
-## 🗄️ Data & Storage
+## Documentation
 
-The system manages:
-- Users
-- Projects / Hosted sites
-- Sessions
-- Logs (system + security)
-- Configuration settings
+Additional documentation is available in the `documentation/` folder, including admin dashboard module guides under `documentation/admin-dashboard/`.
 
-Planned improvement:
-- Dual database logging system (primary + audit store)
+## Contributing
 
----
+Contributions are welcome. Please follow these guidelines:
 
-## 🔐 Security Design
+- Keep feature-specific logic in `app/Services/`
+- Use controllers for request validation, authentication, and view rendering only
+- Add or update `documentation/` for any architectural or workflow changes
+- Preserve security controls like CSRF validation, path normalization, and authenticated routing
 
-Turbohost is built with a security-first mindset:
+## License
 
-### Threats addressed:
-- SQL injection
-- Unauthorized admin access
-- File upload exploitation
-- Session hijacking
-
-### Protection strategies:
-- Parameterized queries
-- Strict authentication checks
-- Input sanitization
-- Role-based permissions
-- Audit logging
-
----
-
-## ⚙️ Installation (Development)
-
-> Requirements may vary depending on final stack configuration.
-
-### Prerequisites:
-- PHP / Node.js (depending on implementation)
-- MySQL or SQLite database
-- Web server (Apache/Nginx or local dev server)
-
-### Setup Steps:
-1. Clone repository
-2. Configure environment variables
-3. Import database schema
-4. Start local server
-5. Access dashboard via browser
-
----
-
-## 📁 Project Structure (Expected)
-
-```
-Turbohost/
-│
-├── auth/           # Authentication system
-├── admin/          # Admin dashboard
-├── hosting/        # File upload & deployment engine
-├── config/         # Configuration files
-├── logs/           # System & audit logs
-├── public/         # Publicly served sites
-├── assets/         # Frontend assets
-└── index.php       # Entry point
-```
-
----
-
-## 🧠 Design Philosophy
-
-Turbohost is built around three core principles:
-- Simplicity over complexity
-- Security by design
-- Accessibility for non-technical users
-
----
-
-## 🚧 Roadmap
-
-### Phase 1
-- Core hosting system
-- Authentication
-- Basic dashboard
-
-### Phase 2
-- Enhanced security layer
-- Admin controls expansion
-- Logging improvements
-
-### Phase 3
-- Sitemap automation
-- Advanced deployment features
-- Performance optimization
-
-### Phase 4
-- Multi-user scaling
-- API exposure
-- Plugin ecosystem (future vision)
-
----
-
-## 🤝 Contribution
-
-Contributions are welcome. Suggested areas:
-- Security improvements
-- UI/UX enhancements
-- Performance optimization
-- Documentation expansion
-
----
-
-## 📜 License
-
-To be defined.
-
----
-
-## 🌍 Vision
-
-Turbohost aims to become a simple yet powerful hosting platform that enables anyone to publish a website without needing deep technical knowledge.
+Add licensing information here if the project is open source.
