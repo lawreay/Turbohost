@@ -37,6 +37,7 @@ return [
         'app' => APP_PATH,
         'public' => PUBLIC_PATH,
         'storage' => STORAGE_PATH,
+        'updates' => STORAGE_PATH . DIRECTORY_SEPARATOR . 'updates',
         'uploads' => UPLOAD_PATH,
         'website_uploads' => WEBSITE_UPLOAD_PATH,
     ],
