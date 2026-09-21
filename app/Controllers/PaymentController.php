@@ -69,7 +69,7 @@ class PaymentController extends Controller
                 'return_url' => $baseUrl . '/payments/paychangu/return',
                 'tx_ref' => $txRef,
                 'customization' => [
-                    'title' => 'TurboHostMw Premium Plan',
+                    'title' => 'Instaweb Premium Plan',
                     'description' => 'One month Premium hosting upgrade',
                 ],
                 'meta' => [
@@ -155,7 +155,7 @@ class PaymentController extends Controller
             (int) $payment['user_id'],
             'Premium plan activated',
             $message,
-            'Your TurboHostMw Premium plan is active',
+            'Your Instaweb Premium plan is active',
             'subscription-update',
             ['message' => $message],
             [
@@ -232,6 +232,6 @@ class PaymentController extends Controller
     {
         $parts = preg_split('/\s+/', trim($fullName)) ?: [];
 
-        return count($parts) > 1 ? implode(' ', array_slice($parts, 1)) : 'TurboHostMw';
+        return count($parts) > 1 ? implode(' ', array_slice($parts, 1)) : 'Instaweb';
     }
 }

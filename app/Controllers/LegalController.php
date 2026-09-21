@@ -282,7 +282,7 @@ class LegalController extends Controller
 
         $subject = 'Updated platform policies';
         $title = 'Platform policies updated';
-        $message = 'We have updated our platform policies. Please review and accept the changes to continue using TurboHostMw.';
+        $message = 'We have updated our platform policies. Please review and accept the changes to continue using Instaweb.';
 
         foreach ($users as $user) {
             $userId = (int) ($user['id'] ?? 0);

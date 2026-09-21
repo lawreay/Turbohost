@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title><?= htmlspecialchars($title ?? ($app['name'] ?? 'TurboHostMw'), ENT_QUOTES, 'UTF-8') ?></title>
+  <title><?= htmlspecialchars($title ?? ($app['name'] ?? 'Instaweb'), ENT_QUOTES, 'UTF-8') ?></title>
   <link rel="stylesheet" href="<?= htmlspecialchars(($app['base_url'] ?? '') . '/assets/css/styles.css', ENT_QUOTES, 'UTF-8') ?>">
 </head>
 <body class="maintenance-body">

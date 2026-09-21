@@ -19,7 +19,7 @@
       <div class="col-lg-7 reveal">
         <div class="accordion faq-accordion" id="faqAccordion">
           <?php foreach ([
-            ['How does hosting work?', 'You create or upload your website files, then publish them through the dashboard to a TurboHostMw URL.'],
+            ['How does hosting work?', 'You create or upload your website files, then publish them through the dashboard to an Instaweb URL.'],
             ['Can I use my own domain?', 'Yes. Custom domains are available on the Premium plan for projects that need a more professional identity.'],
             ['How long does free hosting last?', 'The free plan is a good starting point for one website and 100MB of storage, with a 30-day hosting period.'],
             ['Can I upgrade anytime?', 'Yes. You can move from Free to Premium when your project grows and you need more space, features, or control.'],

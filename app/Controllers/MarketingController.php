@@ -7,7 +7,7 @@ use App\Models\Setting;
 use App\Services\PlanService;
 
 /**
- * Displays public marketing pages for TurboHostMw.
+ * Displays public marketing pages for Instaweb.
  */
 class MarketingController extends Controller
 {
@@ -17,7 +17,7 @@ class MarketingController extends Controller
     public function home(): void
     {
         $settings = (new Setting())->all();
-        $pageTitle = trim((string) ($settings['browser_title'] ?? '')) ?: ($settings['homepage_hero_title'] ?? 'TurboHostMw - Website Hosting Made Simple');
+        $pageTitle = trim((string) ($settings['browser_title'] ?? '')) ?: ($settings['homepage_hero_title'] ?? 'Instaweb - Website Hosting Made Simple');
 
         $this->view('marketing/home', [
             'title' => $pageTitle,
@@ -53,7 +53,7 @@ class MarketingController extends Controller
      */
     public function about(): void
     {
-        $this->view('marketing/about', ['title' => 'About TurboHostMw']);
+        $this->view('marketing/about', ['title' => 'About Instaweb']);
     }
 
     /**
@@ -90,7 +90,7 @@ class MarketingController extends Controller
         }
 
         $settings = (new Setting())->all();
-        $adminEmail = $settings['admin_login_notification_email'] ?? $settings['mail_from_address'] ?? 'no-reply@turbohostmw.com';
+        $adminEmail = $settings['admin_login_notification_email'] ?? $settings['mail_from_address'] ?? 'no-reply@instaweb.free.dev';
 
         $mailer = new \App\Services\MailerService([ // mail config will be resolved inside NotificationService normally
             'host' => $settings['mail_host'] ?? '',

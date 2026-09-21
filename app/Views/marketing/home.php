@@ -18,11 +18,11 @@ $url = static function (string $target) use ($baseUrl): string {
 $heroKicker = $value('homepage_hero_kicker', 'Build · Host · Grow');
 $heroTitle = $value('homepage_hero_title', 'Build and host websites in minutes.');
 $heroSubtitle = $value('homepage_hero_subtitle', 'Create websites directly in your browser — no advanced technical skills needed. Perfect for schools, shops, churches, and growing brands across Malawi.');
-$heroNote = trim((string) ($settings['homepage_hero_note'] ?? 'Create your account and publish your first site with TurboHostMw in minutes.'));
+$heroNote = trim((string) ($settings['homepage_hero_note'] ?? 'Create your account and publish your first site with Instaweb in minutes.'));
 $primaryUrl = $url((string) ($settings['homepage_cta_url'] ?? '/register'));
 $secondaryUrl = $url((string) ($settings['homepage_secondary_cta_url'] ?? '/login'));
 $heroImage = $value('homepage_hero_image', 'https://images.pexels.com/photos/30530403/pexels-photo-30530403.jpeg?auto=compress&cs=tinysrgb&w=1280');
-$heroAlt = $value('homepage_hero_media_alt', 'TurboHostMw dashboard showcase');
+$heroAlt = $value('homepage_hero_media_alt', 'Instaweb dashboard showcase');
 ?>
 
 <section class="homepage-hero">
@@ -49,7 +49,7 @@ $heroAlt = $value('homepage_hero_media_alt', 'TurboHostMw dashboard showcase');
         <span class="editor-tab">index.html — lawreeay.lovestoblog.com</span>
       </div>
       <div class="editor-body"><span id="typed-code"></span><span class="cursor"></span></div>
-      <div class="publish-badge" id="publishBadge"><span class="dotpulse"></span> Published to https://instaweb.freedev.app/</div>
+      <div class="publish-badge" id="publishBadge"><span class="dotpulse"></span> Published to https://instaweb.free.dev/</div>
     </div>
   </div>
 </section>
@@ -65,8 +65,8 @@ $heroAlt = $value('homepage_hero_media_alt', 'TurboHostMw dashboard showcase');
         </div>
       </div>
       <div class="col-lg-6 reveal">
-        <p>Whether you are creating a portfolio, a church outreach page, a school notice board, or a small business website, TurboHostMw helps you share your work online without needing advanced technical skills.</p>
-        <p class="text-secondary">You do not need to be a web developer to launch a strong website. TurboHostMw is designed to make publishing feel clear, practical, and local.</p>
+        <p>Whether you are creating a portfolio, a church outreach page, a school notice board, or a small business website, Instaweb helps you share your work online without needing advanced technical skills.</p>
+        <p class="text-secondary">You do not need to be a web developer to launch a strong website. Instaweb is designed to make publishing feel clear, practical, and local.</p>
         <ul class="feature-list mt-4">
           <li><i data-lucide="arrow-right"></i> Quick setup with beginner-friendly controls</li>
           <li><i data-lucide="arrow-right"></i> Upload files and publish your site in minutes</li>
@@ -102,7 +102,7 @@ $heroAlt = $value('homepage_hero_media_alt', 'TurboHostMw dashboard showcase');
         <div class="feature-card h-100">
           <i data-lucide="globe-2"></i>
           <h3>Publish</h3>
-          <p>Get your website online instantly with a TurboHostMw subdomain.</p>
+          <p>Get your website online instantly with an Instaweb subdomain.</p>
         </div>
       </div>
     </div>

@@ -382,10 +382,10 @@ class AuthController extends Controller
         (new NotificationManager($this->config))->sendUserNotificationWithEmail(
             (int) $reset['user_id'],
             'Password changed',
-            'Your TurboHostMw password was updated successfully.',
+            'Your Instaweb password was updated successfully.',
             'Password changed',
             'password-changed',
-            ['message' => 'Your TurboHostMw password was updated successfully.'],
+            ['message' => 'Your Instaweb password was updated successfully.'],
             [
                 'category' => 'security',
                 'icon' => 'shield-check',

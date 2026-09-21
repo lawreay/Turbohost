@@ -15,7 +15,7 @@ class HomeController extends Controller
     public function index(): void
     {
         $this->view('home/index', [
-            'title' => 'Welcome to TurboHostMw',
+            'title' => 'Welcome to Instaweb',
         ]);
     }
 }

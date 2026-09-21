@@ -32,7 +32,7 @@ class PlanService
                     '1 website',
                     '100MB storage',
                     sprintf('%d days hosting', $this->freeHostingDays()),
-                    'TurboHostMw subdomain',
+                    'Instaweb subdomain',
                 ]),
             ],
             'premium' => [

@@ -240,7 +240,7 @@ function removeTree(string $path): void
 </head>
 <body>
 <div class="shell">
-    <div class="brand"><div class="brand-mark">T</div><div><strong>TurboHostMw</strong><span>Administrator workspace</span></div></div>
+    <div class="brand"><div class="brand-mark">I</div><div><strong>Instaweb</strong><span>Administrator workspace</span></div></div>
     <main>
         <div class="hero"><p class="eyebrow">System maintenance</p><h1>Application Update</h1><p>Install a trusted release package with a backup created automatically before any files are changed.</p></div>
         <div class="content">

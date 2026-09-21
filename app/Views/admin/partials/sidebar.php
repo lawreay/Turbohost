@@ -10,7 +10,7 @@
       <?php endif; ?>
     </div>
     <div>
-      <strong>TurboHostMw</strong>
+      <strong>Instaweb</strong>
       <span>Admin Console</span>
     </div>
   </div>

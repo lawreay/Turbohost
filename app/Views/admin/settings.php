@@ -45,8 +45,8 @@ $checked = static fn (string $key, string $default = '0'): string => (($settings
           <section class="settings-pro-panel active" data-settings-panel="general">
             <h2>General</h2>
             <div class="row g-3">
-              <div class="col-md-6"><label class="form-label">Site Name</label><input class="form-control" name="site_name" value="<?= $value('site_name', 'TurboHostMw') ?>"></div>
-              <div class="col-md-6"><label class="form-label">Site Email</label><input class="form-control" name="site_email" value="<?= $value('site_email', 'admin@turbohostmw.com') ?>"></div>
+              <div class="col-md-6"><label class="form-label">Site Name</label><input class="form-control" name="site_name" value="<?= $value('site_name', 'Instaweb') ?>"></div>
+              <div class="col-md-6"><label class="form-label">Site Email</label><input class="form-control" name="site_email" value="<?= $value('site_email', 'admin@instaweb.free.dev') ?>"></div>
               <div class="col-12"><label class="settings-check"><input type="checkbox" name="allow_registration" value="1" <?= $checked('allow_registration', '1') ?>> Allow public registration</label></div>
             </div>
           </section>
@@ -87,7 +87,7 @@ $checked = static fn (string $key, string $default = '0'): string => (($settings
                     <?php endif; ?>
                   </div>
                   <div>
-                    <strong id="preview-brand-name"><?= htmlspecialchars($value('site_name', 'TurboHostMw'), ENT_QUOTES, 'UTF-8') ?></strong>
+                    <strong id="preview-brand-name"><?= htmlspecialchars($value('site_name', 'Instaweb'), ENT_QUOTES, 'UTF-8') ?></strong>
                     <span>Admin Preview</span>
                   </div>
                 </div>
@@ -117,7 +117,7 @@ $checked = static fn (string $key, string $default = '0'): string => (($settings
           <section class="settings-pro-panel" data-settings-panel="branding">
             <h2>Branding & Site Identity</h2>
             <div class="row g-3">
-              <div class="col-md-6"><label class="form-label">Platform Name</label><input class="form-control" name="footer_brand_name" value="<?= $value('footer_brand_name', $settings['site_name'] ?? 'TurboHostMw') ?>"></div>
+              <div class="col-md-6"><label class="form-label">Platform Name</label><input class="form-control" name="footer_brand_name" value="<?= $value('footer_brand_name', $settings['site_name'] ?? 'Instaweb') ?>"></div>
               <div class="col-md-6"><label class="form-label">Tagline</label><input class="form-control" name="footer_tagline" value="<?= $value('footer_tagline', 'Build • Host • Grow') ?>"></div>
               <div class="col-12"><label class="form-label">Brand Description</label><textarea class="form-control" name="footer_description" rows="3"><?= $value('footer_description', 'Affordable hosting for students, churches, portfolios and businesses.') ?></textarea></div>
               <div class="col-md-6"><label class="form-label">Footer Logo URL</label><input class="form-control" name="footer_logo_url" value="<?= $value('footer_logo_url') ?>"></div>
@@ -135,7 +135,7 @@ $checked = static fn (string $key, string $default = '0'): string => (($settings
               <div class="row g-3">
                 <div class="col-md-5"><label class="form-label">Kicker</label><input class="form-control" name="homepage_hero_kicker" value="<?= $value('homepage_hero_kicker', 'BUILD AND HOST WEBSITES IN MINUTES') ?>"></div>
                 <div class="col-md-7"><label class="form-label">Title</label><input class="form-control" name="homepage_hero_title" value="<?= $value('homepage_hero_title', 'Build, host, and launch your website without the usual stress.') ?>"></div>
-                <div class="col-12"><label class="form-label">Subtitle</label><textarea class="form-control" name="homepage_hero_subtitle" rows="3"><?= $value('homepage_hero_subtitle', 'TurboHostMw helps students, churches, small businesses, freelancers, and NGOs create a strong online presence with simple tools and dependable hosting.') ?></textarea></div>
+                <div class="col-12"><label class="form-label">Subtitle</label><textarea class="form-control" name="homepage_hero_subtitle" rows="3"><?= $value('homepage_hero_subtitle', 'Instaweb helps students, churches, small businesses, freelancers, and NGOs create a strong online presence with simple tools and dependable hosting.') ?></textarea></div>
                 <div class="col-12"><label class="form-label">Small note below buttons</label><input class="form-control" name="homepage_hero_note" value="<?= $value('homepage_hero_note', 'Perfect for anyone who wants a website that looks professional and is easy to manage.') ?>"></div>
               </div>
             </div>
@@ -153,7 +153,7 @@ $checked = static fn (string $key, string $default = '0'): string => (($settings
               <div class="row g-3">
                 <div class="col-md-6"><label class="form-label">Hero image URL</label><input class="form-control" name="homepage_hero_image" value="<?= $value('homepage_hero_image', 'https://images.pexels.com/photos/30530403/pexels-photo-30530403.jpeg?auto=compress&cs=tinysrgb&w=1280') ?>"></div>
                 <div class="col-md-6"><label class="form-label">Hero video URL</label><input class="form-control" name="homepage_hero_video" value="<?= $value('homepage_hero_video') ?>"></div>
-                <div class="col-md-6"><label class="form-label">Media alt text</label><input class="form-control" name="homepage_hero_media_alt" value="<?= $value('homepage_hero_media_alt', 'TurboHostMw dashboard showcase') ?>"></div>
+                <div class="col-md-6"><label class="form-label">Media alt text</label><input class="form-control" name="homepage_hero_media_alt" value="<?= $value('homepage_hero_media_alt', 'Instaweb dashboard showcase') ?>"></div>
                 <div class="col-md-3"><label class="form-label">Alignment</label><select class="form-control" name="homepage_hero_alignment"><option value="split" <?= $value('homepage_hero_alignment', 'split') === 'split' ? 'selected' : '' ?>>Split</option><option value="center" <?= $value('homepage_hero_alignment') === 'center' ? 'selected' : '' ?>>Centered</option></select></div>
                 <div class="col-md-3"><label class="form-label">Overlay strength</label><select class="form-control" name="homepage_hero_overlay"><option value="soft" <?= $value('homepage_hero_overlay', 'soft') === 'soft' ? 'selected' : '' ?>>Soft</option><option value="strong" <?= $value('homepage_hero_overlay') === 'strong' ? 'selected' : '' ?>>Strong</option><option value="none" <?= $value('homepage_hero_overlay') === 'none' ? 'selected' : '' ?>>None</option></select></div>
               </div>
@@ -194,12 +194,12 @@ $checked = static fn (string $key, string $default = '0'): string => (($settings
             <div class="settings-fieldset">
               <h3>Brand & Contact</h3>
               <div class="row g-3">
-                <div class="col-md-6"><label class="form-label">Brand name</label><input class="form-control" name="footer_brand_name" value="<?= $value('footer_brand_name', $settings['site_name'] ?? 'TurboHostMw') ?>"></div>
+                <div class="col-md-6"><label class="form-label">Brand name</label><input class="form-control" name="footer_brand_name" value="<?= $value('footer_brand_name', $settings['site_name'] ?? 'Instaweb') ?>"></div>
                 <div class="col-md-6"><label class="form-label">Tagline</label><input class="form-control" name="footer_tagline" value="<?= $value('footer_tagline', 'Build • Host • Grow') ?>"></div>
                 <div class="col-12"><label class="form-label">Description</label><textarea class="form-control" name="footer_description" rows="3"><?= $value('footer_description', 'Affordable hosting for students, churches, portfolios and businesses.') ?></textarea></div>
                 <div class="col-md-6"><label class="form-label">Email</label><input class="form-control" name="footer_email" value="<?= $value('footer_email', 'phukal@mau.adventist.org') ?>"></div>
                 <div class="col-md-6"><label class="form-label">Phone</label><input class="form-control" name="footer_phone" value="<?= $value('footer_phone', '+265 XXX XXX XXX') ?>"></div>
-                <div class="col-md-6"><label class="form-label">Website</label><input class="form-control" name="footer_website" value="<?= $value('footer_website', 'turbohostmw.com') ?>"></div>
+                <div class="col-md-6"><label class="form-label">Website</label><input class="form-control" name="footer_website" value="<?= $value('footer_website', 'instaweb.free.dev') ?>"></div>
                 <div class="col-md-6"><label class="form-label">Address</label><input class="form-control" name="footer_address" value="<?= $value('footer_address', 'Ntcheu, Malawi') ?>"></div>
                 <div class="col-md-6"><label class="form-label">Google Maps URL</label><input class="form-control" name="footer_google_maps_url" value="<?= $value('footer_google_maps_url') ?>"></div>
                 <div class="col-md-6"><label class="form-label">Business hours</label><input class="form-control" name="footer_business_hours" value="<?= $value('footer_business_hours', '08:00 - 17:00') ?>"></div>
@@ -306,7 +306,7 @@ $checked = static fn (string $key, string $default = '0'): string => (($settings
               <div class="col-md-4"><label class="form-label">Free Website Limit</label><input class="form-control" name="free_plan_website_limit" value="<?= $value('free_plan_website_limit', '1') ?>"></div>
               <div class="col-md-4"><label class="form-label">Free Storage MB</label><input class="form-control" name="free_storage_limit_mb" value="<?= $value('free_storage_limit_mb', '100') ?>"></div>
               <div class="col-md-4"><label class="form-label">Free Hosting Days</label><input class="form-control" name="free_plan_hosting_days" value="<?= $value('free_plan_hosting_days', '30') ?>"></div>
-              <div class="col-12"><label class="form-label">Free Plan Benefits</label><textarea class="form-control" name="free_plan_benefits" rows="4"><?= $value('free_plan_benefits', "1 website\n100MB storage\n30 days hosting\nTurboHostMw subdomain") ?></textarea></div>
+              <div class="col-12"><label class="form-label">Free Plan Benefits</label><textarea class="form-control" name="free_plan_benefits" rows="4"><?= $value('free_plan_benefits', "1 website\n100MB storage\n30 days hosting\nInstaweb subdomain") ?></textarea></div>
               <div class="col-md-6"><label class="form-label">Premium Plan Name</label><input class="form-control" name="premium_plan_name" value="<?= $value('premium_plan_name', 'Premium Plan') ?>"></div>
               <div class="col-md-6"><label class="form-label">Premium Plan Price</label><input class="form-control" name="premium_plan_price" value="<?= $value('premium_plan_price', 'MWK 5,000/mo') ?>"></div>
               <div class="col-12"><label class="form-label">Premium Plan Benefits</label><textarea class="form-control" name="premium_plan_benefits" rows="4"><?= $value('premium_plan_benefits', "Unlimited websites\nCustom domains\nNo expiry\nAnalytics and priority support") ?></textarea></div>
@@ -340,7 +340,7 @@ $checked = static fn (string $key, string $default = '0'): string => (($settings
                 </select>
               </div>
               <div class="col-md-6"><label class="form-label">From Address</label><input class="form-control" name="mail_from_address" value="<?= $value('mail_from_address') ?>"></div>
-              <div class="col-md-6"><label class="form-label">From Name</label><input class="form-control" name="mail_from_name" value="<?= $value('mail_from_name', 'TurboHostMw') ?>"></div>
+              <div class="col-md-6"><label class="form-label">From Name</label><input class="form-control" name="mail_from_name" value="<?= $value('mail_from_name', 'Instaweb') ?>"></div>
               <div class="col-md-6"><label class="form-label">Admin Login Notification Address</label><input class="form-control" name="admin_login_notification_email" value="<?= $value('admin_login_notification_email') ?>"></div>
               <div class="col-12"><label class="form-label">Send test email to</label><input class="form-control" type="email" name="send_test_email_to" placeholder="Enter an address to receive a test message using the settings above."></div>
               <div class="col-12"><button class="btn btn-outline-primary" type="submit" formaction="<?= htmlspecialchars(($app['base_url'] ?? '') . '/admin/settings/test-email', ENT_QUOTES, 'UTF-8') ?>">Send test email</button></div>

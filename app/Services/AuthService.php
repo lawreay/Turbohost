@@ -13,7 +13,7 @@ use PDO;
  */
 class AuthService
 {
-    private const REMEMBER_COOKIE = 'turbohost_remember';
+    private const REMEMBER_COOKIE = 'instaweb_remember';
 
     /**
      * Log in a user for the current session.

@@ -1,5 +1,5 @@
 <?php /** @var array $policies */ /** @var string $name */ /** @var string $message */ ?>
-<h2><?= htmlspecialchars($this->appConfig['name'] ?? 'TurboHostMw', ENT_QUOTES, 'UTF-8') ?> — Policy update</h2>
+<h2><?= htmlspecialchars($this->appConfig['name'] ?? 'Instaweb', ENT_QUOTES, 'UTF-8') ?> — Policy update</h2>
 <p>Hello <?= htmlspecialchars($name ?? '', ENT_QUOTES, 'UTF-8') ?>,</p>
 <p><?= htmlspecialchars($message ?? 'A platform policy was updated.', ENT_QUOTES, 'UTF-8') ?></p>
 <?php if (!empty($policies) && is_array($policies)): ?>

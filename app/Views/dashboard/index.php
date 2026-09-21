@@ -90,7 +90,7 @@ $formatBytes = static function (int $bytes): string {
           <div class="client-empty">
             <i data-lucide="folder-plus"></i>
             <strong>No websites yet</strong>
-            <p>Create your first project and publish it on a TurboHostMw subdomain.</p>
+            <p>Create your first project and publish it on an Instaweb subdomain.</p>
           </div>
         <?php else: ?>
           <div class="client-site-list">

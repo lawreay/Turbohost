@@ -14,7 +14,7 @@
 
     <div class="auth-form-panel">
       <div class="logo mb-4 text-center">
-        <h1>TurboHostMw</h1>
+        <h1>Instaweb</h1>
         <p>Forgot your password?</p>
       </div>
 

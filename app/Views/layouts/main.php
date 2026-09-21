@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <?php $themeSettings = (new \App\Models\Setting())->all(); ?>
-  <?php $pageTitle = htmlspecialchars($title ?? ($app['name'] ?? 'TurboHostMw'), ENT_QUOTES, 'UTF-8'); ?>
-  <?php $pageDescription = htmlspecialchars($themeSettings['meta_description'] ?? 'TurboHostMw offers fast website hosting, a browser-based website builder, secure file uploads, and reliable publishing tools for individuals, developers, and small businesses.', ENT_QUOTES, 'UTF-8'); ?>
+  <?php $pageTitle = htmlspecialchars($title ?? ($app['name'] ?? 'Instaweb'), ENT_QUOTES, 'UTF-8'); ?>
+  <?php $pageDescription = htmlspecialchars($themeSettings['meta_description'] ?? 'Instaweb offers fast website hosting, a browser-based website builder, secure file uploads, and reliable publishing tools for individuals, developers, and small businesses.', ENT_QUOTES, 'UTF-8'); ?>
   <?php $pageKeywords = htmlspecialchars($themeSettings['seo_keywords'] ?? 'website hosting, web hosting, site builder, file uploads', ENT_QUOTES, 'UTF-8'); ?>
   <?php $siteUrl = rtrim(($app['base_url'] ?? ''), '/'); ?>
   <?php $requestPath = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/'; ?>
@@ -20,12 +20,12 @@
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="<?= $pageUrl ?>">
   <meta property="og:type" content="website">
-  <meta property="og:site_name" content="<?= htmlspecialchars($app['name'] ?? 'TurboHostMw', ENT_QUOTES, 'UTF-8') ?>">
+  <meta property="og:site_name" content="<?= htmlspecialchars($app['name'] ?? 'Instaweb', ENT_QUOTES, 'UTF-8') ?>">
   <meta property="og:title" content="<?= $pageTitle ?>">
   <meta property="og:description" content="<?= $pageDescription ?>">
   <meta property="og:image" content="<?= $ogImage ?>">
   <meta property="og:url" content="<?= $pageUrl ?>">
-  <meta name="turbohost-base-url" content="<?= htmlspecialchars($app['base_url'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
+  <meta name="instaweb-base-url" content="<?= htmlspecialchars($app['base_url'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="<?= $pageTitle ?>">
   <meta name="twitter:description" content="<?= $pageDescription ?>">
@@ -82,7 +82,7 @@
             <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="DM Sans, sans-serif" font-size="16" font-weight="700" fill="white">T</text>
           </svg>
         <?php endif; ?>
-        <span class="header-logo-text"><?= htmlspecialchars($app['name'] ?? 'TurboHostMw', ENT_QUOTES, 'UTF-8') ?></span>
+        <span class="header-logo-text"><?= htmlspecialchars($app['name'] ?? 'Instaweb', ENT_QUOTES, 'UTF-8') ?></span>
       </a>
 
       <!-- Desktop Navigation -->
@@ -130,7 +130,7 @@
               <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="DM Sans, sans-serif" font-size="16" font-weight="700" fill="white">T</text>
             </svg>
           <?php endif; ?>
-          <span><?= htmlspecialchars($app['name'] ?? 'TurboHostMw', ENT_QUOTES, 'UTF-8') ?></span>
+          <span><?= htmlspecialchars($app['name'] ?? 'Instaweb', ENT_QUOTES, 'UTF-8') ?></span>
         </a>
         <button class="mobile-menu-close" id="headerMenuClose" aria-label="Close menu">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -182,7 +182,7 @@
         <a href="<?= htmlspecialchars(($app['base_url'] ?? '') . '/', ENT_QUOTES, 'UTF-8') ?>" class="footer-link">Home</a>
         <a href="<?= htmlspecialchars(($app['base_url'] ?? '') . '/privacy', ENT_QUOTES, 'UTF-8') ?>" class="footer-link">Privacy</a>
         <a href="<?= htmlspecialchars(($app['base_url'] ?? '') . '/terms', ENT_QUOTES, 'UTF-8') ?>" class="footer-link">Terms</a>
-        <small>&copy; <?= date('Y') ?> <?= htmlspecialchars($app['name'] ?? 'TurboHostMw', ENT_QUOTES, 'UTF-8') ?> v1.0</small>
+        <small>&copy; <?= date('Y') ?> <?= htmlspecialchars($app['name'] ?? 'Instaweb', ENT_QUOTES, 'UTF-8') ?> v1.0</small>
       </div>
     </div>
   </header>
@@ -267,13 +267,13 @@
       ['label' => 'TikTok', 'url' => trim((string) ($themeSettings['footer_social_tiktok_url'] ?? ''))],
       ['label' => 'WhatsApp', 'url' => trim((string) ($themeSettings['footer_social_whatsapp_url'] ?? ''))],
   ];
-  $footerBrandName = trim((string) ($themeSettings['footer_brand_name'] ?? $app['name'] ?? 'TurboHostMw')) ?: 'TurboHostMw';
+  $footerBrandName = trim((string) ($themeSettings['footer_brand_name'] ?? $app['name'] ?? 'Instaweb')) ?: 'Instaweb';
   $footerTagline = trim((string) ($themeSettings['footer_tagline'] ?? 'Build • Host • Grow')) ?: 'Build • Host • Grow';
   $footerDescription = trim((string) ($themeSettings['footer_description'] ?? 'Affordable hosting for students, churches, portfolios and businesses.')) ?: 'Affordable hosting for students, churches, portfolios and businesses.';
   $footerCompany = trim((string) ($themeSettings['footer_company_name'] ?? 'Lawreay Technologies')) ?: 'Lawreay Technologies';
   $footerEmail = trim((string) ($themeSettings['footer_email'] ?? 'phukal@mau.adventist.org')) ?: 'phukal@mau.adventist.org';
   $footerPhone = trim((string) ($themeSettings['footer_phone'] ?? '+265 XXX XXX XXX')) ?: '+265 XXX XXX XXX';
-  $footerWebsite = trim((string) ($themeSettings['footer_website'] ?? 'turbohostmw.com')) ?: 'turbohostmw.com';
+  $footerWebsite = trim((string) ($themeSettings['footer_website'] ?? 'instaweb.free.dev')) ?: 'instaweb.free.dev';
   $footerWebsiteUrl = preg_match('#^https?://#i', $footerWebsite) ? $footerWebsite : 'https://' . ltrim($footerWebsite, '/');
   $footerAddress = trim((string) ($themeSettings['footer_address'] ?? 'Ntcheu, Malawi')) ?: 'Ntcheu, Malawi';
   $footerMapsUrl = trim((string) ($themeSettings['footer_google_maps_url'] ?? ''));
@@ -359,7 +359,7 @@
         <?php if (($themeSettings['footer_show_build_number'] ?? '0') === '1'): ?><span>Build <?= htmlspecialchars($app['build'] ?? '001', ENT_QUOTES, 'UTF-8') ?></span><?php endif; ?>
         <?php if (($themeSettings['footer_show_copyright'] ?? '1') === '1'): ?><span><?= htmlspecialchars($footerCopyright, ENT_QUOTES, 'UTF-8') ?></span><?php endif; ?>
         <?php if (($themeSettings['footer_made_in_malawi'] ?? '1') === '1'): ?><span>Made in Malawi 🇲🇼</span><?php endif; ?>
-        <?php if (($themeSettings['footer_powered_by'] ?? '1') === '1'): ?><span>Powered by TurboHostMw</span><?php endif; ?>
+        <?php if (($themeSettings['footer_powered_by'] ?? '1') === '1'): ?><span>Powered by Instaweb</span><?php endif; ?>
       </div>
       <?php endif; ?>
     </div>

@@ -39,7 +39,7 @@ class MailerService
         $verifyUrl = rtrim($this->appConfig['base_url'], '/') . '/verify-email?token=' . urlencode($token);
         $safeName = htmlspecialchars($toName, ENT_QUOTES, 'UTF-8');
         $safeUrl = htmlspecialchars($verifyUrl, ENT_QUOTES, 'UTF-8');
-        $appName = htmlspecialchars($this->appConfig['name'] ?? 'TurboHostMw', ENT_QUOTES, 'UTF-8');
+        $appName = htmlspecialchars($this->appConfig['name'] ?? 'Instaweb', ENT_QUOTES, 'UTF-8');
 
         $html = <<<HTML
 <h2>Verify your {$appName} account</h2>
@@ -62,7 +62,7 @@ HTML;
         $resetUrl = rtrim($this->appConfig['base_url'], '/') . '/reset-password?token=' . urlencode($token);
         $safeName = htmlspecialchars($toName, ENT_QUOTES, 'UTF-8');
         $safeUrl = htmlspecialchars($resetUrl, ENT_QUOTES, 'UTF-8');
-        $appName = htmlspecialchars($this->appConfig['name'] ?? 'TurboHostMw', ENT_QUOTES, 'UTF-8');
+        $appName = htmlspecialchars($this->appConfig['name'] ?? 'Instaweb', ENT_QUOTES, 'UTF-8');
 
         $html = <<<HTML
 <h2>Reset your {$appName} password</h2>
@@ -83,7 +83,7 @@ HTML;
     public function sendTwoFactorCodeEmail(string $toEmail, string $toName, string $code): bool
     {
         $safeName = htmlspecialchars($toName, ENT_QUOTES, 'UTF-8');
-        $appName = htmlspecialchars($this->appConfig['name'] ?? 'TurboHostMw', ENT_QUOTES, 'UTF-8');
+        $appName = htmlspecialchars($this->appConfig['name'] ?? 'Instaweb', ENT_QUOTES, 'UTF-8');
 
         $html = <<<HTML
 <h2>{$appName} two-factor verification</h2>
@@ -121,7 +121,7 @@ HTML;
 <p><strong>IP address:</strong> {$safeIp}</p>
 HTML;
 
-        return $this->send($recipient, 'TurboHostMw Admin', 'Administrator login alert', $html);
+        return $this->send($recipient, 'Instaweb Admin', 'Administrator login alert', $html);
     }
 
     /**

@@ -2,7 +2,7 @@
 <section class="page-hero page-hero-legal">
   <div class="container">
     <h1>Accept updated policies</h1>
-    <p class="lead">To continue using TurboHostMw, please review and accept the latest published policies below.</p>
+    <p class="lead">To continue using Instaweb, please review and accept the latest published policies below.</p>
   </div>
 </section>
 <section class="page-content container">

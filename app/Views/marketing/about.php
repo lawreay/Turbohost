@@ -2,7 +2,7 @@
   <div class="container">
     <p class="section-kicker">About</p>
     <h1>Professional website hosting made for Malawi.</h1>
-    <p class="lead text-white-50">TurboHostMw was created to help people and organizations build an online presence with less confusion, more confidence, and a platform that is simple to use.</p>
+    <p class="lead text-white-50">Instaweb was created to help people and organizations build an online presence with less confusion, more confidence, and a platform that is simple to use.</p>
   </div>
 </section>
 
@@ -11,7 +11,7 @@
     <div class="row g-5 align-items-center">
       <div class="col-lg-6 reveal">
         <h2>We believe online presence should be practical and accessible.</h2>
-        <p class="text-secondary">From small businesses and churches to students and NGOs, many people need a website but do not want to struggle with complicated hosting tools. TurboHostMw gives you a clear path to publish your content, manage your files, and grow your online presence in a way that feels manageable.</p>
+        <p class="text-secondary">From small businesses and churches to students and NGOs, many people need a website but do not want to struggle with complicated hosting tools. Instaweb gives you a clear path to publish your content, manage your files, and grow your online presence in a way that feels manageable.</p>
       </div>
       <div class="col-lg-6 reveal">
         <div class="about-panel">

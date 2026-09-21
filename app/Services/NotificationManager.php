@@ -113,10 +113,10 @@ class NotificationManager
                 $this->sendUserNotificationWithEmail(
                     $userId,
                     'Password reset requested',
-                    'A password reset was requested for your TurboHostMw account.',
+                    'A password reset was requested for your Instaweb account.',
                     'Password reset requested',
                     'password-reset',
-                    ['message' => 'A password reset was requested for your TurboHostMw account.'],
+                    ['message' => 'A password reset was requested for your Instaweb account.'],
                     [
                         'category' => 'security',
                         'icon' => 'key',

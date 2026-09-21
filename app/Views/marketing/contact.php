@@ -1,7 +1,7 @@
 <section class="subpage-hero">
   <div class="container">
     <p class="section-kicker">Contact</p>
-    <h1>Reach out to TurboHostMw.</h1>
+    <h1>Reach out to Instaweb.</h1>
     <p class="lead text-white-50">Whether you are in Lilongwe, Blantyre, Zomba, or anywhere else in Malawi, we are here to help you get online with confidence.</p>
   </div>
 </section>

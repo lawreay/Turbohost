@@ -2,7 +2,7 @@
   <div class="container">
     <p class="section-kicker">Features</p>
     <h1>Everything you need to publish a website with confidence.</h1>
-    <p class="lead text-white-50">TurboHostMw brings file management, publishing, analytics, and account control into one simple platform that works well for beginners and growing teams.</p>
+    <p class="lead text-white-50">Instaweb brings file management, publishing, analytics, and account control into one simple platform that works well for beginners and growing teams.</p>
   </div>
 </section>
 
@@ -32,7 +32,7 @@
 <section class="page-section">
   <div class="container">
     <div class="section-heading section-heading-left reveal">
-      <p class="section-kicker">Why TurboHostMw</p>
+      <p class="section-kicker">Why Instaweb</p>
       <h2>Publish faster with a platform designed for local websites.</h2>
     </div>
     <div class="row g-4 reveal-stagger">

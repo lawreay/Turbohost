@@ -88,7 +88,7 @@ class ProjectStorageService
   <main>
     <p>{$templateLabel} starter project</p>
     <h1>{$safeTitle}</h1>
-    <p>Your TurboHostMw website is ready. Edit this file, preview your changes, and publish when you are done.</p>
+    <p>Your Instaweb website is ready. Edit this file, preview your changes, and publish when you are done.</p>
   </main>
 </body>
 </html>

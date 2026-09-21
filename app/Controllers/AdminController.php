@@ -263,7 +263,7 @@ class AdminController extends Controller
             $userId,
             $targetPlan === 'premium' ? 'Premium plan activated' : 'Plan changed to Free',
             $message,
-            $targetPlan === 'premium' ? 'Your TurboHostMw Premium plan is active' : 'Your TurboHostMw plan changed',
+            $targetPlan === 'premium' ? 'Your Instaweb Premium plan is active' : 'Your Instaweb plan changed',
             'subscription-update',
             ['message' => $message],
             [
@@ -877,10 +877,10 @@ class AdminController extends Controller
             'username' => $settings['mail_username'] ?? '',
             'password' => $settings['mail_password'] ?? '',
             'encryption' => $settings['mail_encryption'] ?? 'tls',
-            'from_address' => $settings['mail_from_address'] ?? 'no-reply@turbohostmw.com',
-            'from_name' => $settings['mail_from_name'] ?? ($this->config['name'] ?? 'TurboHostMw'),
+            'from_address' => $settings['mail_from_address'] ?? 'no-reply@instaweb.free.dev',
+            'from_name' => $settings['mail_from_name'] ?? ($this->config['name'] ?? 'Instaweb'),
             'admin_login_notification_address' => $settings['admin_login_notification_email'] ?? '',
-            'admin_login_notification_message' => $settings['admin_login_notification_message'] ?? 'An administrator has signed in to the TurboHostMw site.',
+            'admin_login_notification_message' => $settings['admin_login_notification_message'] ?? 'An administrator has signed in to the Instaweb site.',
         ];
 
         try {
@@ -888,9 +888,9 @@ class AdminController extends Controller
             $sent = $mailer->send(
                 $recipient,
                 'SMTP test recipient',
-                'TurboHostMw SMTP test message',
-                '<p>This is a test email sent from TurboHostMw using your SMTP configuration.</p>',
-                'This is a test email sent from TurboHostMw using your SMTP configuration.'
+                'Instaweb SMTP test message',
+                '<p>This is a test email sent from Instaweb using your SMTP configuration.</p>',
+                'This is a test email sent from Instaweb using your SMTP configuration.'
             );
 
             if ($sent) {

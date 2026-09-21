@@ -6,7 +6,7 @@
       <div class="auth-side-content">
         <p class="auth-eyebrow">Start hosting</p>
         <h1>Create your account</h1>
-        <p>Register in minutes, verify your email, and launch your first website with TurboHostMw.</p>
+        <p>Register in minutes, verify your email, and launch your first website with Instaweb.</p>
         <a class="btn btn-light btn-lg mt-3" href="<?= htmlspecialchars(($app['base_url'] ?? '') . '/login', ENT_QUOTES, 'UTF-8') ?>">Back to login</a>
         <a class="d-inline-block mt-3 text-white-50" href="<?= htmlspecialchars(($app['base_url'] ?? '') . '/', ENT_QUOTES, 'UTF-8') ?>">Back to home</a>
       </div>
@@ -14,7 +14,7 @@
 
     <div class="auth-form-panel">
       <div class="logo mb-4 text-center">
-        <h1>TurboHostMw</h1>
+        <h1>Instaweb</h1>
         <p>Begin with a free account</p>
       </div>
 
