@@ -15,6 +15,7 @@ class App
      */
     public function run(): void
     {
+        self::sendSecurityHeaders();
         $config = require __DIR__ . '/../Config/app.php';
         $routes = require __DIR__ . '/../Config/routes.php';
 
@@ -33,5 +34,23 @@ class App
             $routes,
             $config
         );
+    }
+
+    /**
+     * Prevent authenticated and generated pages from being cached by browsers or proxies.
+     */
+    private static function sendSecurityHeaders(): void
+    {
+        header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
+        header('Pragma: no-cache');
+        header('Expires: 0');
+        header('X-Content-Type-Options: nosniff');
+        header('X-Frame-Options: SAMEORIGIN');
+        header('Referrer-Policy: strict-origin-when-cross-origin');
+        header('Permissions-Policy: camera=(), microphone=(), geolocation=()');
+
+        if (Session::isSecureRequest()) {
+            header('Strict-Transport-Security: max-age=31536000; includeSubDomains');
+        }
     }
 }

@@ -103,6 +103,85 @@ HTML;
     }
 
     /**
+     * Install the preserved WordPress package into a project directory.
+     */
+    public function installWordPress(string $projectPath): int
+    {
+        $packagePath = STORAGE_PATH . DIRECTORY_SEPARATOR . 'wordpress' . DIRECTORY_SEPARATOR . 'wordpress-6.9.3.zip';
+        if (!is_file($packagePath)) {
+            throw new \RuntimeException('The preserved WordPress package is missing.');
+        }
+
+        $zip = new \ZipArchive();
+        if ($zip->open($packagePath) !== true) {
+            throw new \RuntimeException('Unable to open the WordPress package.');
+        }
+
+        $totalBytes = 0;
+        try {
+            for ($index = 0; $index < $zip->numFiles; $index++) {
+                $name = str_replace('\\', '/', (string) $zip->getNameIndex($index));
+                if (!str_starts_with($name, 'wordpress/')) {
+                    continue;
+                }
+
+                $relative = substr($name, strlen('wordpress/'));
+                if ($relative === '') {
+                    continue;
+                }
+                if (str_contains($relative, "\0") || preg_match('#(^|/)\.\.?(/|$)#', $relative)) {
+                    throw new \RuntimeException('The WordPress package contains an unsafe path.');
+                }
+
+                $target = $projectPath . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, $relative);
+                if (str_ends_with($relative, '/')) {
+                    if (!is_dir($target) && !mkdir($target, 0755, true) && !is_dir($target)) {
+                        throw new \RuntimeException('Unable to create the WordPress folder.');
+                    }
+                    continue;
+                }
+
+                $parent = dirname($target);
+                if (!is_dir($parent) && !mkdir($parent, 0755, true) && !is_dir($parent)) {
+                    throw new \RuntimeException('Unable to create the WordPress folder.');
+                }
+
+                $stream = $zip->getStream($name);
+                $file = $stream ? fopen($target, 'wb') : false;
+                if (!$stream || !$file) {
+                    if (is_resource($stream)) {
+                        fclose($stream);
+                    }
+                    throw new \RuntimeException('Unable to extract the WordPress package.');
+                }
+                $totalBytes += stream_copy_to_stream($stream, $file);
+                fclose($file);
+                fclose($stream);
+            }
+        } finally {
+            $zip->close();
+        }
+
+        $prefix = 'wp_' . bin2hex(random_bytes(8)) . '_';
+        $config = "<?php\n";
+        $config .= "define('DB_NAME', " . var_export((string) env('DB_NAME', 'turbohostmw'), true) . ");\n";
+        $config .= "define('DB_USER', " . var_export((string) env('DB_USER', ''), true) . ");\n";
+        $config .= "define('DB_PASSWORD', " . var_export((string) env('DB_PASS', ''), true) . ");\n";
+        $config .= "define('DB_HOST', " . var_export((string) env('DB_HOST', 'localhost'), true) . ");\n";
+        $config .= "define('DB_CHARSET', 'utf8mb4');\ndefine('DB_COLLATE', '');\n";
+        $config .= "\$table_prefix = " . var_export($prefix, true) . ";\n";
+        $config .= "define('WP_DEBUG', false);\n\n";
+        $config .= "if (!defined('ABSPATH')) { define('ABSPATH', __DIR__ . '/'); }\nrequire_once ABSPATH . 'wp-settings.php';\n";
+
+        if (file_put_contents($projectPath . DIRECTORY_SEPARATOR . 'wp-config.php', $config) === false
+            || file_put_contents($projectPath . DIRECTORY_SEPARATOR . '.turbohost-wordpress', $prefix) === false) {
+            throw new \RuntimeException('Unable to create the WordPress configuration.');
+        }
+
+        return $totalBytes + strlen($config) + strlen($prefix);
+    }
+
+    /**
      * Normalize a browser-submitted project-relative path.
      */
     public function normalizeRelativePath(string $path): string

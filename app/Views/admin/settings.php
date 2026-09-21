@@ -14,6 +14,9 @@ $checked = static fn (string $key, string $default = '0'): string => (($settings
           <h1>Settings</h1>
         </div>
         <div class="admin-pro-topbar-right admin-pro-actions">
+          <a class="btn btn-outline-primary" href="<?= htmlspecialchars(($app['base_url'] ?? '') . '/app-update.php', ENT_QUOTES, 'UTF-8') ?>">
+            <i data-lucide="upload-cloud"></i> Application Update
+          </a>
           <a class="btn btn-outline-secondary" href="<?= htmlspecialchars(($app['base_url'] ?? '') . '/admin', ENT_QUOTES, 'UTF-8') ?>">Cancel</a>
           <button class="btn btn-primary" type="submit">Save Changes</button>
         </div>
@@ -444,6 +447,29 @@ $checked = static fn (string $key, string $default = '0'): string => (($settings
         </div>
       </div>
     </form>
+    <section class="admin-pro-card mt-4">
+      <div class="d-flex flex-wrap justify-content-between align-items-start gap-3">
+        <div>
+          <p class="admin-pro-kicker mb-1">System maintenance</p>
+          <h2 class="h4 mb-2">Application Update</h2>
+          <p class="text-muted mb-0">Upload a ZIP package to update the application. A backup is created before the update is applied.</p>
+        </div>
+        <i data-lucide="upload-cloud" aria-hidden="true"></i>
+      </div>
+      <form method="POST" action="<?= htmlspecialchars(($app['base_url'] ?? '') . '/app-update.php', ENT_QUOTES, 'UTF-8') ?>" enctype="multipart/form-data" class="mt-3">
+        <?= \App\Core\Csrf::field() ?>
+        <div class="row g-3 align-items-end">
+          <div class="col-md-8">
+            <label class="form-label" for="settings_update_package">ZIP package</label>
+            <input class="form-control" id="settings_update_package" name="update_package" type="file" accept=".zip,application/zip" required>
+            <small class="form-text text-muted">Maximum size: 200 MB.</small>
+          </div>
+          <div class="col-md-4">
+            <button class="btn btn-primary w-100" type="submit"><i data-lucide="upload-cloud"></i> Upload and apply</button>
+          </div>
+        </div>
+      </form>
+    </section>
     <footer class="admin-pro-footer">
       <span>Settings saved <?= htmlspecialchars(date('d M Y'), ENT_QUOTES, 'UTF-8') ?></span>
       <span><a href="<?= htmlspecialchars(($app['base_url'] ?? '') . '/admin', ENT_QUOTES, 'UTF-8') ?>">Return to dashboard</a></span>

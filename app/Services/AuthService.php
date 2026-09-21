@@ -143,7 +143,7 @@ class AuthService
             'path' => '/',
             'httponly' => true,
             'samesite' => 'Lax',
-            'secure' => !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off',
+            'secure' => Session::isSecureRequest(),
         ]);
     }
 
@@ -175,7 +175,7 @@ class AuthService
             'path' => '/',
             'httponly' => true,
             'samesite' => 'Lax',
-            'secure' => !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off',
+            'secure' => Session::isSecureRequest(),
         ]);
     }
 }

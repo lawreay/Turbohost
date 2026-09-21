@@ -5,5 +5,3 @@ DirectoryIndex index.html index.htm
   Require all denied
 </FilesMatch>
 
-RemoveHandler .php .phtml .phar .cgi .pl .py .sh .bat .cmd .exe
-RemoveType .php .phtml .phar .cgi .pl .py .sh .bat .cmd .exe

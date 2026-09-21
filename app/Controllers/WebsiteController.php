@@ -117,8 +117,10 @@ class WebsiteController extends Controller
 
         try {
             $projectPath = $storage->ensureProjectDirectory($userId, $slug);
-            $starterSize = $storage->createStarterIndex($projectPath, $name, $template);
-            $websiteModel->addFileRecord($websiteId, 'index.html', 'index.html', 'html', $starterSize);
+            $starterSize = $template === 'wordpress'
+                ? $storage->installWordPress($projectPath)
+                : $storage->createStarterIndex($projectPath, $name, $template);
+            $websiteModel->addFileRecord($websiteId, $template === 'wordpress' ? 'wp-config.php' : 'index.html', $template === 'wordpress' ? 'wp-config.php' : 'index.html', 'php', $starterSize);
             $websiteModel->updateStorageUsed($websiteId, $starterSize);
         } catch (\Throwable $exception) {
             $storage->deleteProjectDirectory($userId, $slug);
@@ -139,7 +141,9 @@ class WebsiteController extends Controller
             ]
         );
 
-        Session::flash('success', 'Website project created. Your draft index.html is ready.');
+        Session::flash('success', $template === 'wordpress'
+            ? 'WordPress project created. Publish it, then complete the WordPress setup in your site URL.'
+            : 'Website project created. Your draft index.html is ready.');
         $this->redirectTo('/dashboard/websites/show?id=' . $websiteId);
     }
 
@@ -305,6 +309,7 @@ class WebsiteController extends Controller
             'church' => 'Church',
             'blog' => 'Blog',
             'school' => 'School project',
+            'wordpress' => 'WordPress',
         ];
     }
 

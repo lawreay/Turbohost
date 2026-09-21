@@ -51,6 +51,7 @@
                 </option>
               <?php endforeach; ?>
             </select>
+            <small class="text-secondary d-block mt-2">WordPress projects include the preserved WordPress package and require PHP/MySQL support on the server.</small>
           </div>
           <div class="col-12 d-flex gap-2">
             <button class="btn btn-primary" type="submit"><i data-lucide="folder-plus"></i> Create Website</button>

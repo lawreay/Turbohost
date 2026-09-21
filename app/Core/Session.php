@@ -16,13 +16,26 @@ class Session
             return;
         }
 
+        ini_set('session.use_strict_mode', '1');
+        ini_set('session.use_only_cookies', '1');
         session_set_cookie_params([
+            'path' => '/',
             'httponly' => true,
             'samesite' => 'Lax',
-            'secure' => !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off',
+            'secure' => self::isSecureRequest(),
         ]);
 
         session_start();
+    }
+
+    /**
+     * Detect HTTPS directly and through trusted reverse-proxy headers.
+     */
+    public static function isSecureRequest(): bool
+    {
+        return (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
+            || strtolower((string) ($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '')) === 'https'
+            || strtolower((string) ($_SERVER['HTTP_X_FORWARDED_SSL'] ?? '')) === 'on';
     }
 
     /**

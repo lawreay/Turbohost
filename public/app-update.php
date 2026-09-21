@@ -8,6 +8,13 @@ use App\Core\Csrf;
 use App\Core\Session;
 use App\Services\AuthService;
 
+header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
+header('Pragma: no-cache');
+header('Expires: 0');
+header('X-Content-Type-Options: nosniff');
+header('X-Frame-Options: SAMEORIGIN');
+header('Referrer-Policy: strict-origin-when-cross-origin');
+
 $config = require __DIR__ . '/../app/Config/app.php';
 Session::start();
 
@@ -202,26 +209,54 @@ function removeTree(string $path): void
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Application Update</title>
   <style>
-    body { font-family: Arial, sans-serif; background: #f3f6fa; color: #172033; margin: 0; padding: 48px 20px; }
-    main { max-width: 680px; margin: auto; background: #fff; border: 1px solid #dbe2ea; border-radius: 10px; padding: 32px; box-shadow: 0 10px 30px rgba(25, 45, 75, .08); }
-    h1 { margin-top: 0; } .notice { padding: 12px 14px; border-radius: 6px; background: #e8f7ee; color: #17633a; margin-bottom: 20px; }
-    .notice.danger { background: #fdecec; color: #9b2020; } label { display: block; font-weight: 700; margin-bottom: 8px; }
-    input[type=file] { display: block; width: 100%; margin-bottom: 18px; } button { border: 0; border-radius: 6px; padding: 11px 18px; background: #0d6efd; color: #fff; font-weight: 700; cursor: pointer; }
-    small { color: #5b6678; }
+        :root { color-scheme: light; --ink: #132238; --muted: #66758a; --line: #dbe5ef; --blue: #1769e0; --blue-dark: #0f4fae; --wash: #eef6ff; }
+        * { box-sizing: border-box; }
+        body { min-height: 100vh; margin: 0; padding: 32px 18px; font-family: "DM Sans", "Segoe UI", sans-serif; color: var(--ink); background: radial-gradient(circle at 15% 0%, #dff0ff 0, transparent 36%), linear-gradient(145deg, #f7fbff, #edf3f8); }
+        .shell { width: min(760px, 100%); margin: auto; }
+        .brand { display: flex; align-items: center; gap: 12px; margin: 0 0 24px 4px; }
+        .brand-mark { display: grid; width: 42px; height: 42px; place-items: center; border-radius: 12px; background: linear-gradient(145deg, var(--blue), #34a0ff); color: white; font-size: 21px; font-weight: 800; box-shadow: 0 8px 18px rgba(23, 105, 224, .22); }
+        .brand strong { display: block; font-size: 15px; letter-spacing: .02em; }
+        .brand span { display: block; margin-top: 2px; color: var(--muted); font-size: 12px; }
+        main { overflow: hidden; background: rgba(255, 255, 255, .94); border: 1px solid rgba(219, 229, 239, .9); border-radius: 18px; box-shadow: 0 22px 55px rgba(28, 54, 84, .12); }
+        .hero { padding: 34px 36px 28px; background: linear-gradient(135deg, #fafdff, var(--wash)); border-bottom: 1px solid var(--line); }
+        .eyebrow { margin: 0 0 9px; color: var(--blue); font-size: 11px; font-weight: 800; letter-spacing: .13em; text-transform: uppercase; }
+        h1 { margin: 0; font-size: clamp(27px, 5vw, 40px); letter-spacing: -.02em; }
+        .hero p { max-width: 570px; margin: 12px 0 0; color: var(--muted); line-height: 1.6; }
+        .content { padding: 28px 36px 34px; }
+        .notice { padding: 13px 15px; margin-bottom: 22px; border: 1px solid #bde6cc; border-radius: 10px; background: #effaf3; color: #17633a; line-height: 1.45; }
+        .notice.danger { border-color: #f1c2c2; background: #fff1f1; color: #9b2020; }
+        .upload-box { padding: 22px; border: 1px dashed #a8c4e2; border-radius: 13px; background: #fbfdff; }
+        label { display: block; margin-bottom: 9px; font-weight: 800; }
+        input[type=file] { display: block; width: 100%; padding: 11px; border: 1px solid var(--line); border-radius: 8px; background: white; color: var(--muted); }
+        input[type=file]:focus { outline: 3px solid rgba(23, 105, 224, .16); border-color: var(--blue); }
+        .help { display: block; margin-top: 10px; color: var(--muted); font-size: 12px; line-height: 1.5; }
+        button { display: inline-flex; align-items: center; gap: 9px; margin-top: 20px; border: 0; border-radius: 8px; padding: 12px 18px; background: var(--blue); color: #fff; font: inherit; font-weight: 800; cursor: pointer; box-shadow: 0 8px 16px rgba(23, 105, 224, .2); }
+        button:hover { background: var(--blue-dark); }
+        button:focus-visible { outline: 3px solid rgba(23, 105, 224, .28); outline-offset: 3px; }
+        .footnote { display: flex; gap: 9px; align-items: flex-start; margin: 20px 2px 0; color: var(--muted); font-size: 12px; line-height: 1.5; }
+        .footnote strong { color: var(--ink); }
+        @media (max-width: 560px) { body { padding: 20px 12px; } .hero, .content { padding-left: 22px; padding-right: 22px; } .brand { margin-bottom: 18px; } .upload-box { padding: 17px; } }
   </style>
 </head>
 <body>
-<main>
-  <h1>Application Update</h1>
-  <?php if ($message !== null): ?><div class="notice <?= $messageType === 'danger' ? 'danger' : '' ?>"><?= htmlspecialchars($message, ENT_QUOTES, 'UTF-8') ?></div><?php endif; ?>
-  <p>Upload a ZIP package to update the application. A backup is created before files are applied.</p>
-  <form method="post" enctype="multipart/form-data">
-    <?= Csrf::field() ?>
-    <label for="update_package">ZIP package</label>
-    <input id="update_package" name="update_package" type="file" accept=".zip,application/zip" required>
-    <small>Maximum size: 200 MB. Configuration, uploads, logs, templates, update storage, Git metadata, and Composer ZIP files are preserved.</small>
-    <p><button type="submit">Upload and apply update</button></p>
-  </form>
-</main>
+<div class="shell">
+    <div class="brand"><div class="brand-mark">T</div><div><strong>TurboHostMw</strong><span>Administrator workspace</span></div></div>
+    <main>
+        <div class="hero"><p class="eyebrow">System maintenance</p><h1>Application Update</h1><p>Install a trusted release package with a backup created automatically before any files are changed.</p></div>
+        <div class="content">
+            <?php if ($message !== null): ?><div class="notice <?= $messageType === 'danger' ? 'danger' : '' ?>" role="alert"><?= htmlspecialchars($message, ENT_QUOTES, 'UTF-8') ?></div><?php endif; ?>
+            <form method="post" enctype="multipart/form-data">
+                <?= Csrf::field() ?>
+                <div class="upload-box">
+                    <label for="update_package">Choose release package</label>
+                    <input id="update_package" name="update_package" type="file" accept=".zip,application/zip" required>
+                    <small class="help">ZIP files up to 200 MB. Configuration, uploads, logs, templates, update storage, Git metadata, and Composer ZIP files remain untouched.</small>
+                      <button type="submit">Upload and apply update</button>
+                </div>
+            </form>
+            <p class="footnote"><span><strong>Protected operation.</strong> Only Administrator accounts can access this screen. A backup is stored before the update begins.</span></p>
+        </div>
+    </main>
+</div>
 </body>
 </html>

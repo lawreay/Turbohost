@@ -21,13 +21,18 @@ class PublishingService
         $storage = new ProjectStorageService();
         $draftPath = $storage->projectPath($userId, $slug);
 
-        if (!is_file($draftPath . DIRECTORY_SEPARATOR . 'index.html')) {
+        $isWordPress = is_file($draftPath . DIRECTORY_SEPARATOR . '.turbohost-wordpress');
+        if (!$isWordPress && !is_file($draftPath . DIRECTORY_SEPARATOR . 'index.html')) {
             throw new \RuntimeException('Publishing requires an index.html file.');
         }
 
         $publicPath = $this->publicSitePath($projectId, $slug);
         $this->replacePublicDirectory($publicPath);
-        $this->copyPublishableFiles($draftPath, $publicPath);
+        $this->copyPublishableFiles($draftPath, $publicPath, $isWordPress);
+
+        if ($isWordPress) {
+            $this->writeWordPressAccessRules($publicPath);
+        }
 
         return (new PublicSiteUrlService())->relativePath($projectId, $slug);
     }
@@ -73,7 +78,7 @@ class PublishingService
     /**
      * Copy only allowed static files from draft storage to public storage.
      */
-    private function copyPublishableFiles(string $draftPath, string $publicPath): void
+    private function copyPublishableFiles(string $draftPath, string $publicPath, bool $isWordPress = false): void
     {
         $iterator = new \RecursiveIteratorIterator(
             new \RecursiveDirectoryIterator($draftPath, \FilesystemIterator::SKIP_DOTS),
@@ -84,6 +89,10 @@ class PublishingService
             $relative = substr($item->getPathname(), strlen($draftPath) + 1);
             $target = $publicPath . DIRECTORY_SEPARATOR . $relative;
 
+            if ($relative === '.turbohost-wordpress') {
+                continue;
+            }
+
             if ($item->isDir()) {
                 if (!is_dir($target) && !mkdir($target, 0755, true) && !is_dir($target)) {
                     throw new \RuntimeException('Unable to create public subfolder.');
@@ -92,7 +101,7 @@ class PublishingService
             }
 
             $extension = strtolower(pathinfo($item->getFilename(), PATHINFO_EXTENSION));
-            if (!in_array($extension, $this->publishableExtensions, true)) {
+            if (!$isWordPress && !in_array($extension, $this->publishableExtensions, true)) {
                 continue;
             }
 
@@ -104,6 +113,25 @@ class PublishingService
             if (!copy($item->getPathname(), $target)) {
                 throw new \RuntimeException('Unable to publish file.');
             }
+        }
+    }
+
+    /**
+     * Allow the WordPress project to run PHP while static projects remain PHP-disabled.
+     */
+    private function writeWordPressAccessRules(string $publicPath): void
+    {
+        $rules = <<<'HTACCESS'
+Options -Indexes
+DirectoryIndex index.php index.html index.htm
+
+<FilesMatch "\.(php|phtml|phar)$">
+  Require all granted
+</FilesMatch>
+HTACCESS;
+
+        if (file_put_contents($publicPath . DIRECTORY_SEPARATOR . '.htaccess', $rules . PHP_EOL) === false) {
+            throw new \RuntimeException('Unable to configure the WordPress site.');
         }
     }
 
