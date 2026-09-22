@@ -120,8 +120,9 @@ class WebsiteController extends Controller
             $starterSize = $template === 'wordpress'
                 ? $storage->installWordPress($projectPath)
                 : $storage->createStarterIndex($projectPath, $name, $template);
-            $websiteModel->addFileRecord($websiteId, $template === 'wordpress' ? 'wp-config.php' : 'index.html', $template === 'wordpress' ? 'wp-config.php' : 'index.html', 'php', $starterSize);
-            $websiteModel->updateStorageUsed($websiteId, $starterSize);
+            $projectSize = $storage->directorySize($storage->projectPath($userId, $slug));
+            $websiteModel->addFileRecord($websiteId, $template === 'wordpress' ? 'wp-config.php' : 'index.html', $template === 'wordpress' ? 'wp-config.php' : 'index.html', $template === 'wordpress' ? 'php' : 'html', $starterSize);
+            $websiteModel->updateStorageUsed($websiteId, $projectSize);
         } catch (\Throwable $exception) {
             $storage->deleteProjectDirectory($userId, $slug);
             $websiteModel->deleteForUser($websiteId, $userId);

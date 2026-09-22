@@ -107,9 +107,21 @@ HTML;
      */
     public function installWordPress(string $projectPath): int
     {
-        $packagePath = STORAGE_PATH . DIRECTORY_SEPARATOR . 'wordpress' . DIRECTORY_SEPARATOR . 'wordpress-6.9.3.zip';
+        $configuredPackage = (string) env('WORDPRESS_PACKAGE_PATH', 'storage/wordpress/wordpress-6.9.3.zip');
+        $packagePath = str_starts_with($configuredPackage, DIRECTORY_SEPARATOR)
+            ? $configuredPackage
+            : ROOT_PATH . DIRECTORY_SEPARATOR . str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $configuredPackage);
         if (!is_file($packagePath)) {
             throw new \RuntimeException('The preserved WordPress package is missing.');
+        }
+
+        $expectedHash = strtolower(trim((string) env('WORDPRESS_PACKAGE_SHA256', '')));
+        if ($expectedHash === '' || !preg_match('/^[a-f0-9]{64}$/', $expectedHash)) {
+            throw new \RuntimeException('The WordPress package checksum is not configured.');
+        }
+        $actualHash = hash_file('sha256', $packagePath);
+        if (!is_string($actualHash) || !hash_equals($expectedHash, strtolower($actualHash))) {
+            throw new \RuntimeException('The WordPress package checksum failed.');
         }
 
         $zip = new \ZipArchive();
@@ -117,7 +129,15 @@ HTML;
             throw new \RuntimeException('Unable to open the WordPress package.');
         }
 
+        $temporaryPath = $projectPath . '.install-' . bin2hex(random_bytes(8));
+        if (!mkdir($temporaryPath, 0755, true) && !is_dir($temporaryPath)) {
+            throw new \RuntimeException('Unable to prepare the temporary WordPress folder.');
+        }
+
         $totalBytes = 0;
+        $fileCount = 0;
+        $maxBytes = max(1, (int) env('WORDPRESS_MAX_EXTRACTED_BYTES', 512 * BYTES_PER_MB));
+        $maxFiles = max(1, (int) env('WORDPRESS_MAX_FILES', 20000));
         try {
             for ($index = 0; $index < $zip->numFiles; $index++) {
                 $name = str_replace('\\', '/', (string) $zip->getNameIndex($index));
@@ -133,7 +153,23 @@ HTML;
                     throw new \RuntimeException('The WordPress package contains an unsafe path.');
                 }
 
-                $target = $projectPath . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, $relative);
+                if ($fileCount >= $maxFiles) {
+                    throw new \RuntimeException('The WordPress package contains too many files.');
+                }
+                $entry = $zip->statIndex($index);
+                $entryBytes = (int) ($entry['size'] ?? 0);
+                if ($entryBytes < 0 || $totalBytes > $maxBytes - $entryBytes) {
+                    throw new \RuntimeException('The WordPress package is too large to extract.');
+                }
+                $externalAttributes = 0;
+                $attributeType = 0;
+                if ($zip->getExternalAttributesIndex($index, $attributeType, $externalAttributes)
+                    && $attributeType === \ZipArchive::OPSYS_UNIX
+                    && (($externalAttributes >> 16) & 0120000) === 0120000) {
+                    throw new \RuntimeException('The WordPress package contains a symbolic link.');
+                }
+
+                $target = $temporaryPath . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, $relative);
                 if (str_ends_with($relative, '/')) {
                     if (!is_dir($target) && !mkdir($target, 0755, true) && !is_dir($target)) {
                         throw new \RuntimeException('Unable to create the WordPress folder.');
@@ -155,11 +191,22 @@ HTML;
                     throw new \RuntimeException('Unable to extract the WordPress package.');
                 }
                 $totalBytes += stream_copy_to_stream($stream, $file);
+                $fileCount++;
                 fclose($file);
                 fclose($stream);
             }
+        } catch (\Throwable $exception) {
+            $this->deleteProjectTree($temporaryPath);
+            throw $exception;
         } finally {
             $zip->close();
+        }
+
+        foreach (['index.php', 'wp-admin', 'wp-includes', 'wp-content', 'wp-settings.php', 'wp-login.php'] as $required) {
+            if (!file_exists($temporaryPath . DIRECTORY_SEPARATOR . $required)) {
+                $this->deleteProjectTree($temporaryPath);
+                throw new \RuntimeException('The WordPress package is incomplete.');
+            }
         }
 
         $prefix = 'wp_' . bin2hex(random_bytes(8)) . '_';
@@ -173,12 +220,42 @@ HTML;
         $config .= "define('WP_DEBUG', false);\n\n";
         $config .= "if (!defined('ABSPATH')) { define('ABSPATH', __DIR__ . '/'); }\nrequire_once ABSPATH . 'wp-settings.php';\n";
 
-        if (file_put_contents($projectPath . DIRECTORY_SEPARATOR . 'wp-config.php', $config) === false
-            || file_put_contents($projectPath . DIRECTORY_SEPARATOR . '.turbohost-wordpress', $prefix) === false) {
+        if (file_put_contents($temporaryPath . DIRECTORY_SEPARATOR . 'wp-config.php', $config) === false
+            || file_put_contents($temporaryPath . DIRECTORY_SEPARATOR . '.turbohost-wordpress', $prefix) === false) {
+            $this->deleteProjectTree($temporaryPath);
             throw new \RuntimeException('Unable to create the WordPress configuration.');
         }
 
+        if (is_dir($projectPath)) {
+            $this->deleteProjectTree($projectPath);
+        }
+        if (!rename($temporaryPath, $projectPath)) {
+            $this->deleteProjectTree($temporaryPath);
+            throw new \RuntimeException('Unable to finalize the WordPress project.');
+        }
+
         return $totalBytes + strlen($config) + strlen($prefix);
+    }
+
+    private function deleteProjectTree(string $path): bool
+    {
+        if (!is_dir($path)) {
+            return true;
+        }
+
+        $items = array_diff(scandir($path) ?: [], ['.', '..']);
+        foreach ($items as $item) {
+            $itemPath = $path . DIRECTORY_SEPARATOR . $item;
+            if (is_dir($itemPath) && !is_link($itemPath)) {
+                if (!$this->deleteProjectTree($itemPath)) {
+                    return false;
+                }
+            } elseif (!unlink($itemPath)) {
+                return false;
+            }
+        }
+
+        return rmdir($path);
     }
 
     /**

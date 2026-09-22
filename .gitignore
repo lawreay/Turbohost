@@ -1,0 +1,7 @@
+.env
+storage/backups/*
+storage/exports/*
+storage/projects/*
+!storage/backups/.gitkeep
+!storage/exports/.gitkeep
+!storage/projects/.gitkeep

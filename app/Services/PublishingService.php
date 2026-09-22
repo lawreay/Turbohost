@@ -128,6 +128,10 @@ DirectoryIndex index.php index.html index.htm
 <FilesMatch "\.(php|phtml|phar)$">
   Require all granted
 </FilesMatch>
+
+<FilesMatch "^(wp-config\.php|\.env|\.git.*|.*\.(sql|sqlite|log|bak|ini))$">
+    Require all denied
+</FilesMatch>
 HTACCESS;
 
         if (file_put_contents($publicPath . DIRECTORY_SEPARATOR . '.htaccess', $rules . PHP_EOL) === false) {
