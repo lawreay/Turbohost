@@ -1,4 +1,7 @@
 .env
+.env.*
+!.env.example
+!.env.sample
 storage/backups/*
 storage/exports/*
 storage/projects/*
