@@ -27,10 +27,10 @@ if ($requestHost !== '') {
 }
 
 return [
-    'name' => (string) env('APP_NAME', 'Instaweb'),
+    'name' => (string) env('APP_NAME', 'TurboHostMw'),
     'environment' => (string) env('APP_ENV', 'production'),
     'debug' => filter_var(env('APP_DEBUG', false), FILTER_VALIDATE_BOOLEAN),
-    'base_url' => $configuredBaseUrl !== '' ? $configuredBaseUrl : 'https://instaweb.free.dev',
+    'base_url' => $configuredBaseUrl !== '' ? $configuredBaseUrl : 'http://localhost/TurboHostMw/public',
     'timezone' => $timezone,
     'paths' => [
         'root' => ROOT_PATH,
